@@ -1,0 +1,44 @@
+/*navigation style*/
+nav {
+	background-color: #6ED64A;
+	padding-bottom: 0.4em;
+}
+nav ul {
+	list-style-type: none;
+}
+nav ul li {
+	display: inline-block;
+	margin-right: 2em;
+	margin-top: 1em;
+	font-size: 1.25em;
+	font-weight: bold;
+	color: white;
+}
+nav ul li a {
+	color: white;
+}
+nav ul li a:hover {
+	color: #E2F4A2;
+	text-decoration: none;
+}
+nav form input {
+	border: 0;
+}
+#search_submit {
+	background: #47A726 url("/static/public/img/search_icon.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-left: 3px;
+	padding-left: 24px;
+	height: 28px;
+
+	position: relative;
+	top: 7px;
+
+}
+
+/*header style*/
+#logo {
+	width: 150px;
+	height: 150px;
+}
