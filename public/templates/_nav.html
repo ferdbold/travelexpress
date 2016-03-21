@@ -1,6 +1,11 @@
 <nav>
 	<ul>
 		<li><a href="{% url 'public:index' %}">Accueil</a></li>
-		<li><a href="{% url 'public:login' %}">Connexion</a></li>
+		{% if user.is_authenticated %}
+			<li>Bienvenue {{ user.username }}</li>
+			<li><a href="{% url 'public:logout' %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url 'public:login' %}">Connexion</a></li>
+		{% endif %}
 	</ul>
 </nav>
