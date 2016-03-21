@@ -24,16 +24,24 @@ nav ul li a:hover {
 nav form input {
 	border: 0;
 }
+#search_field {
+	color: #555555;
+	font-size: 0.6em;
+	font-weight: normal;
+	height: 30px;
+	width: 200px;
+	padding-left: 1em;
+}
 #search_submit {
 	background: #47A726 url("/static/public/img/search_icon.png");
 	background-repeat: no-repeat;
 	background-position: center;
-	margin-left: 3px;
+	margin-left: -5px;
 	padding-left: 24px;
-	height: 28px;
+	height: 30px;
 
 	position: relative;
-	top: 7px;
+	top: 11px;
 
 }
 
