@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+	<title>TravelExpress</title>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'public/lib/bootstrap-3.3.6-dist/css/bootstrap.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'public/lib/bootstrap-3.3.6-dist/css/bootstrap-theme.min.css' %}" />
+</html>
+<body>
+	{% block content %}{% endblock %}
+
+	<script type="text/javascript" src="{% static 'public/lib/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
