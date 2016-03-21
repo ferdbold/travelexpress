@@ -8,6 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'public/lib/bootstrap-3.3.6-dist/css/bootstrap-theme.min.css' %}" />
 </html>
 <body>
+	{% include '_nav.html' %}
+
 	{% block content %}{% endblock %}
 
 	<script type="text/javascript" src="{% static 'public/lib/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script>

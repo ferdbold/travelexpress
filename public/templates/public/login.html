@@ -1,0 +1,23 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+	<h1>Connexion</h1>
+
+	<form method="post" action="{% url 'public:login' %}">
+		<div class="form-group">
+			<label>
+				Nom d'utilisateur
+				<input type="text" class="form-control" placeholder="John Cena" />
+			</label>
+		</div>
+
+		<div class="form-group">
+			<label>
+				Mot de passe
+				<input type="password" class="form-control" placeholder="●●●●●●●●" />
+			</label>
+		</div>
+
+		<input type="submit" class="btn btn-primary" value="Se connecter" />
+	</form>
+{% endblock %}
