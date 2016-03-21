@@ -15,8 +15,12 @@ def login_view(request):
 			login(request, user)
 			return redirect('public:index')
 		else:
-			# TODO: Pass error message along with response
-			return render(request, 'public/login.html', {})
+			return render(request, 'public/login.html', { \
+				'alert': { \
+					'type': 'danger', \
+					'message': 'Erreur de connexion. Veuillez réessayer' \
+				} \
+			})
 
 	# GET requests
 	else:
@@ -25,3 +29,6 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return redirect('public:index')
+
+def register_view(request):
+	return render(request, 'public/register.html', {})

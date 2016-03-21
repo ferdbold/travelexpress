@@ -10,6 +10,12 @@
 <body>
 	{% include '_nav.html' %}
 
+	{% if alert %}
+		<div class="alert alert-{{ alert.type }}">
+			{{ alert.message }}
+		</div>
+	{% endif %}
+
 	{% block content %}{% endblock %}
 
 	<script type="text/javascript" src="{% static 'public/lib/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script>

@@ -6,6 +6,7 @@
 			<li><a href="{% url 'public:logout' %}">Déconnexion</a></li>
 		{% else %}
 			<li><a href="{% url 'public:login' %}">Connexion</a></li>
+			<li><a href="{% url 'public:register' %}">Inscription</a></li>
 		{% endif %}
 	</ul>
 </nav>
