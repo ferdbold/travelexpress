@@ -3,7 +3,8 @@
 {% block content %}
 	<h1>Inscription</h1>
 
-	<form>
+	<form method="POST">
+		{% csrf_token %}
 		<div class="form-group">
 			<label>
 				Prénom

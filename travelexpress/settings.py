@@ -101,6 +101,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# To add field in User
+AUTH_USER_MODEL = 'public.CustomUser'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

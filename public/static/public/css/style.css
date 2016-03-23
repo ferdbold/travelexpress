@@ -45,6 +45,19 @@ nav form input {
 
 }
 
+/*sub nav styling*/
+nav#sub-nav {
+	background-color: #ABF873;
+}
+nav#sub-nav a {
+	font-weight: normal;
+	font-size: 1em;
+	color: #43B234;
+}
+nav#sub-nav a:hover {
+	color: #50C640;
+}
+
 /*header style*/
 #logo {
 	width: 150px;
