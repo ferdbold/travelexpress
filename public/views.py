@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 from .models import UserProfile
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, TripForm
 
 def index_view(request):
 	return render(request, 'public/index.html', {})
@@ -70,3 +70,12 @@ def register_view(request):
 		form = RegisterForm()
 
 	return render(request, 'public/register.html', { 'form': form })
+
+def trip_create_view(request):
+	if request.method == 'POST':
+		form = TripForm(request.POST)
+
+	else:
+		form = TripForm()
+
+	return render(request, 'public/trip-create.html', { 'form': form })

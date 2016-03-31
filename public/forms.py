@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 
+from .models import Trip
+
 class LoginForm(forms.Form):
 	username = forms.CharField(label='Nom d\'utilisateur', max_length=50)
 	password = forms.CharField(label='Mot de passe', max_length=50, widget=forms.PasswordInput)
@@ -42,3 +44,8 @@ class RegisterForm(forms.Form):
 			self.add_error('password_validation', msg)
 
 		return cleaned_data
+
+class TripForm(forms.ModelForm):
+	class Meta:
+		model = Trip
+		fields = ['leaving_date', 'origin', 'destination']

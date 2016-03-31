@@ -9,7 +9,15 @@
 	margin-top: -5px;
 }
 
-.tex-header-navbar .navbar-nav>li>a {
+.tex-header-navbar .navbar-nav > li > a {
+	color: white;
+}
+
+.tex-header-navbar .navbar-nav > li > a:hover,
+.tex-header-navbar .navbar-nav > .active > a,
+.tex-header-navbar .navbar-nav > .active > a:hover {
+	background-image: none;
+	background-color: #2ec62a;
 	color: white;
 }
 

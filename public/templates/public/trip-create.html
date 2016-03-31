@@ -1,0 +1,17 @@
+{% extends '_layout.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+	<h1>Créer un voyage</h1>
+
+	<form action="{% url 'public:trip_create' %}" method="post" class="form">
+		{% csrf_token %}
+		{% bootstrap_form form %}
+		{% buttons %}
+			<button type="submit" class="btn btn-primary">
+				{% bootstrap_icon 'ok' %} Créer
+			</button>
+		{% endbuttons %}
+	</form>
+{% endblock %}
