@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+from .forms import RegisterForm
+
 def index_view(request):
 	return render(request, 'public/index.html', {})
 
@@ -33,32 +35,14 @@ def logout_view(request):
 
 def register_view(request):
 	if request.method == 'POST':
-		user = User.objects.get(username=request.POST['username'])
-		if user is not None:
-			return render(request, 'public/register.html', {
-				'alert': {
-					'type': 'danger',
-					'message': 'Ce nom d\'utilisateur est déjà utilisé.'
-				}
-			})
+		form = RegisterForm(request.POST)
 
-		user = User.objects.get(email=request.POST['email'])
-		if user is not None:
-			return render(request, 'public/register.html', {
-				'alert': {
-					'type': 'danger',
-					'message': 'Cette adresse courriel est déjà utilisée.'
-				}
-			})
-
-		if request.POST['password'] != request.POST['password_validation']:
-			return render(request, 'public/register.html', {
-				'alert': {
-					'type': 'danger',
-					'message': 'Les deux mots de passe n\'étaient pas identiques.'
-				}
-			})
+		if (form.is_valid()):
+			# TODO: Add user to database and authenticate
+			return redirect('public:index')
 
 	# GET requests
 	else:
-		return render(request, 'public/register.html', {})
+		form = RegisterForm()
+
+	return render(request, 'public/register.html', { 'form': form })

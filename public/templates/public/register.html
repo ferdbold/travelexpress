@@ -1,60 +1,18 @@
 {% extends '_layout.html' %}
 
+{% load bootstrap3 %}
+
 {% block content %}
 	<h1>Inscription</h1>
 
-	<form method="post" action="{% url 'public:register' %}">
-		{% csrf_token %}
-
-		<div class="form-group">
-			<label>
-				Prénom
-				<input type="text" name="first_name" class="form-control" placeholder="John" />
-			</label>
-		</div>
-
-		<div class="form-group">
-			<label>
-				Nom
-				<input type="text" name="last_name" class="form-control" placeholder="Cena" />
-			</label>
-		</div>
-
-		<div class="form-group">
-			<label>
-				Courriel
-				<input type="email" name="email" class="form-control" placeholder="johncena@cenation.com" />
-			</label>
-		</div>
-
-		<div class="form-group">
-			<label>
-				Nom d'utilisateur
-				<input type="text" name="username" class="form-control" placeholder="johncena" />
-			</label>
-		</div>
-
-		<div class="form-group">
-			<label>
-				Mot de passe
-				<input type="password" name="password" class="form-control" />
-			</label>
-		</div>
-
-		<div class="form-group">
-			<label>
-				Mot de passe
-				<input type="password" name="password_validation" class="form-control" />
-			</label>
-		</div>
-
-		<div class="form-group">
-			<label>
-				Numéro de téléphone
-				<input type="phone" name="phone" class="form-control" placeholder="418-555-1234" />
-			</label>
-		</div>
-
-		<input type="submit" class="btn btn-primary" value="S'inscrire" />
+	<form action="{% url 'public:register' %}" method="post" class="form">
+	    {% csrf_token %}
+	    {% bootstrap_form form %}
+	    {% buttons %}
+	        <button type="submit" class="btn btn-primary">
+	            {% bootstrap_icon 'ok' %} S'inscrire
+	        </button>
+	    {% endbuttons %}
 	</form>
+
 {% endblock %}

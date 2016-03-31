@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load bootstrap3 %}
 
 <nav class="navbar navbar-default navbar-fixed-top tex-header-navbar">
 	<div class="container-fluid">
@@ -23,7 +24,7 @@
 				<input type="text" class="form-control" name="search_query" placeholder="Rechercher..." />
 				<span class="input-group-btn">
 					<button type="submit" class="btn btn-default">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						{% bootstrap_icon 'search' %}
 					</button>
 				</span>
 			</div>
