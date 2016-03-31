@@ -21,14 +21,16 @@ class RegisterForm(forms.Form):
 		if username:
 			try:
 				existing_username = User.objects.get(username=username)
-			except User.DoesNotExist:
 				self.add_error('username', 'Cet utilisateur existe déjà')
+			except User.DoesNotExist:
+				existing_username = None
 
 		if email:
 			try:
 				existing_email = User.objects.get(email=email)
-			except User.DoesNotExist:
 				self.add_error('email', 'Cette adresse courriel est déjà utilisée')
+			except User.DoesNotExist:
+				existing_email = None
 
 		if password and password_validation and (password != password_validation):
 			msg = 'Les mots de passe ne sont pas identiques'

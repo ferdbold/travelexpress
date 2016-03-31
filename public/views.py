@@ -38,7 +38,21 @@ def register_view(request):
 		form = RegisterForm(request.POST)
 
 		if (form.is_valid()):
-			# TODO: Add user to database and authenticate
+			# Create new user
+			# TODO: Create related profile object with other fields such as phone number
+			User.objects.create_user(
+				username = form.cleaned_data.get('username'),
+				email = form.cleaned_data.get('email'),
+				password = form.cleaned_data.get('password'),
+				first_name = form.cleaned_data.get('first_name'),
+				last_name = form.cleaned_data.get('last_name')
+			)
+
+			user = authenticate(
+				username = form.cleaned_data.get('username'),
+				password = form.cleaned_data.get('password')
+			)
+			login(request, user)
 			return redirect('public:index')
 
 	# GET requests

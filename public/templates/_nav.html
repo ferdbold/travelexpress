@@ -11,7 +11,7 @@
 
 		<ul class="nav navbar-nav navbar-right">
 			{% if user.is_authenticated %}
-				<li>Bienvenue {{ user.username }}</li>
+				<li class="navbar-text">Bienvenue {{ user.username }}</li>
 				<li><a href="{% url 'public:logout' %}">Déconnexion</a></li>
 			{% else %}
 				<li><a href="{% url 'public:login' %}">Connexion</a></li>
