@@ -1,6 +1,10 @@
 from django import forms
 from django.contrib.auth.models import User
 
+class LoginForm(forms.Form):
+	username = forms.CharField(label='Nom d\'utilisateur', max_length=50)
+	password = forms.CharField(label='Mot de passe', max_length=50, widget=forms.PasswordInput)
+
 class RegisterForm(forms.Form):
 	first_name = forms.CharField(label='Prénom', max_length=100)
 	last_name = forms.CharField(label='Nom', max_length=100)

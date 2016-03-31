@@ -2,32 +2,38 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
-from .forms import RegisterForm
+from .forms import LoginForm, RegisterForm
 
 def index_view(request):
 	return render(request, 'public/index.html', {})
 
 def login_view(request):
 	if request.method == 'POST':
-		user = authenticate(
-			username = request.POST['username'],
-			password = request.POST['password']
-		)
+		form = LoginForm(request.POST)
 
-		if user is not None:
-			login(request, user)
-			return redirect('public:index')
-		else:
-			return render(request, 'public/login.html', {
-				'alert': {
-					'type': 'danger',
-					'message': 'Erreur de connexion. Veuillez réessayer'
-				}
-			})
+		if form.is_valid():
+			user = authenticate(
+				username = request.POST['username'],
+				password = request.POST['password']
+			)
+
+			if user is not None:
+				login(request, user)
+				return redirect('public:index')
+			else:
+				return render(request, 'public/login.html', {
+					'alert': {
+						'type': 'danger',
+						'message': 'Erreur de connexion. Veuillez réessayer'
+					},
+					'form': form
+				})
 
 	# GET requests
 	else:
-		return render(request, 'public/login.html', {})
+		form = LoginForm()
+
+	return render(request, 'public/login.html', { 'form': form })
 
 def logout_view(request):
 	logout(request)
@@ -37,8 +43,7 @@ def register_view(request):
 	if request.method == 'POST':
 		form = RegisterForm(request.POST)
 
-		if (form.is_valid()):
-			# Create new user
+		if form.is_valid():
 			# TODO: Create related profile object with other fields such as phone number
 			User.objects.create_user(
 				username = form.cleaned_data.get('username'),
