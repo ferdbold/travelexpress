@@ -82,3 +82,6 @@ ENV/
 
 # Spyder project settings
 .spyderproject
+
+# Database
+.sqlite3
