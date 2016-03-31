@@ -3,7 +3,9 @@
 {% block content %}
 	<h1>Inscription</h1>
 
-	<form>
+	<form method="post" action="{% url 'public:register' %}">
+		{% csrf_token %}
+
 		<div class="form-group">
 			<label>
 				Prénom
