@@ -11,14 +11,17 @@
 <body>
 	{% include '_nav.html' %}
 
-	{% if alert %}
-		<div class="alert alert-{{ alert.type }}">
-			{{ alert.message }}
-		</div>
-	{% endif %}
+	<div class="tex-page-content container-fluid">
+		{% if alert %}
+			<div class="alert alert-{{ alert.type }}">
+				{{ alert.message }}
+			</div>
+		{% endif %}
 
-	{% block content %}{% endblock %}
+		{% block content %}{% endblock %}
+	</div>
 
+	<script type="text/javascript" src="{% static 'public/lib/jquery/jquery-2.2.2.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'public/lib/bootstrap-3.3.6-dist/js/bootstrap.min.js' %}"></script>
 </body>
 </html>
