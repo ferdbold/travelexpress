@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
+from .models import UserProfile
 from .forms import LoginForm, RegisterForm
 
 def index_view(request):
@@ -44,14 +45,18 @@ def register_view(request):
 		form = RegisterForm(request.POST)
 
 		if form.is_valid():
-			# TODO: Create related profile object with other fields such as phone number
-			User.objects.create_user(
+			user = User.objects.create_user(
 				username = form.cleaned_data.get('username'),
 				email = form.cleaned_data.get('email'),
 				password = form.cleaned_data.get('password'),
 				first_name = form.cleaned_data.get('first_name'),
 				last_name = form.cleaned_data.get('last_name')
 			)
+			profile = UserProfile(
+				user = user,
+				phone = form.cleaned_data.get('phone_number')
+			)
+			profile.save()
 
 			user = authenticate(
 				username = form.cleaned_data.get('username'),
