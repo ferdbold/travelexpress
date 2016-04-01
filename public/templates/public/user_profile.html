@@ -1,5 +1,31 @@
 {% extends '_layout.html' %}
 
+{% load trip_panel %}
+
 {% block content %}
 	<h1>{{ object.first_name }} {{ object.last_name }} <small>{{ object.username }}</small></h1>
+
+	<div class="row">
+		<div class="col-xs-8">
+			<h2>My trips as driver</h2>
+
+			<ul>
+				{% for trip in driver_trips %}
+					<li>
+						{% trip_panel trip %}
+					</li>
+				{% endfor %}
+			</ul>
+
+			<h2>My trips as passenger</h2>
+
+			<ul>
+				{% for trip in passenger_trips %}
+					<li>
+						{% trip_panel trip %}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
 {% endblock %}

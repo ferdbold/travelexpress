@@ -78,3 +78,11 @@ class TripDetailView(DetailView):
 class UserProfileView(DetailView):
 	model = User
 	template_name = 'public/user_profile.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(UserProfileView, self).get_context_data(**kwargs)
+
+		context['driver_trips'] = Trip.objects.filter(driver=context['object'])
+		# TODO: Add passenger trips to context dictionary
+
+		return context
