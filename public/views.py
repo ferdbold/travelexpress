@@ -74,3 +74,7 @@ class TripCreateView(CreateView):
 
 class TripDetailView(DetailView):
 	model = Trip
+
+class UserProfileView(DetailView):
+	model = User
+	template_name = 'public/user_profile.html'
