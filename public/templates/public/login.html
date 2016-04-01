@@ -3,14 +3,14 @@
 {% load bootstrap3 %}
 
 {% block content %}
-	<h1>Connexion</h1>
+	<h1>Login to TravelExpress</h1>
 
 	<form action="{% url 'public:login' %}" method="post" class="form">
 		{% csrf_token %}
 		{% bootstrap_form form %}
 		{% buttons %}
 			<button type="submit" class="btn btn-primary">
-				{% bootstrap_icon 'ok' %} Se connecter
+				{% bootstrap_icon 'ok' %} Login
 			</button>
 		{% endbuttons %}
 	</form>

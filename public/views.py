@@ -25,7 +25,7 @@ def login_view(request):
 				return render(request, 'public/login.html', {
 					'alert': {
 						'type': 'danger',
-						'message': 'Erreur de connexion. Veuillez réessayer'
+						'message': 'Authentication failed, please try again.'
 					},
 					'form': form
 				})
@@ -83,7 +83,7 @@ def trip_create_view(request):
 			return render(request, 'public/index.html', {
 				'alert': {
 					'type': 'success',
-					'message': 'Voyage créé avec succès'
+					'message': 'Trip created successfully!'
 				}
 			})
 

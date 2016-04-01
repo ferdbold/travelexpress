@@ -3,14 +3,14 @@
 {% load bootstrap3 %}
 
 {% block content %}
-	<h1>Inscription</h1>
+	<h1>Register for a new TravelExpress account</h1>
 
 	<form action="{% url 'public:register' %}" method="post" class="form">
 	    {% csrf_token %}
 	    {% bootstrap_form form %}
 	    {% buttons %}
 	        <button type="submit" class="btn btn-primary">
-	            {% bootstrap_icon 'ok' %} S'inscrire
+	            {% bootstrap_icon 'ok' %} Create account
 	        </button>
 	    {% endbuttons %}
 	</form>

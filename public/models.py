@@ -8,14 +8,12 @@ class UserProfile(models.Model):
 class Trip(models.Model):
 	driver = models.ForeignKey(User,
 		on_delete=models.CASCADE,
-		related_name='driver',
-		verbose_name='Conducteur'
+		related_name='driver'
 	)
 	passengers = models.ManyToManyField(User,
-		related_name='passengers',
-		verbose_name='Passagers'
+		related_name='passengers'
 	)
 
-	leaving_date = models.DateTimeField(verbose_name='Date de départ')
-	origin = models.CharField(max_length=255, verbose_name='Origine')
-	destination = models.CharField(max_length=255, verbose_name='Destination')
+	leaving_date = models.DateTimeField()
+	origin = models.CharField(max_length=255)
+	destination = models.CharField(max_length=255)
