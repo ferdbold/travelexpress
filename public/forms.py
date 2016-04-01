@@ -1,12 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.forms.widgets import DateTimeInput
-
-from .models import Trip
-
-class LoginForm(forms.Form):
-	username = forms.CharField(max_length=50)
-	password = forms.CharField(max_length=50, widget=forms.PasswordInput)
 
 class RegisterForm(forms.Form):
 	first_name = forms.CharField(max_length=100)
@@ -45,11 +38,3 @@ class RegisterForm(forms.Form):
 			self.add_error('password_validation', msg)
 
 		return cleaned_data
-
-class TripForm(forms.ModelForm):
-	class Meta:
-		model = Trip
-		fields = ['leaving_date', 'origin', 'destination']
-		widgets = {
-			'leaving_date': DateTimeInput()
-		}

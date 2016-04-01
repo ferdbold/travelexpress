@@ -1,93 +1,67 @@
+from django.views.generic import View, FormView, CreateView
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.urlresolvers import reverse_lazy
 
-from .models import UserProfile
-from .forms import LoginForm, RegisterForm, TripForm
+from .models import UserProfile, Trip
+from .forms import RegisterForm
 
-def index_view(request):
-	return render(request, 'public/index.html', {})
+class IndexView(View):
+	def get(self, request):
+		return render(request, 'public/index.html', {})
 
-def login_view(request):
-	if request.method == 'POST':
-		form = LoginForm(request.POST)
+class LoginView(FormView):
+	template_name = 'public/login.html'
+	form_class = AuthenticationForm
+	success_url = reverse_lazy('public:index')
 
-		if form.is_valid():
-			user = authenticate(
-				username = request.POST['username'],
-				password = request.POST['password']
-			)
+	def form_valid(self, form):
+		login(self.request, form.get_user())
+		return super(LoginView, self).form_valid(form)
 
-			if user is not None:
-				login(request, user)
-				return redirect('public:index')
-			else:
-				return render(request, 'public/login.html', {
-					'alert': {
-						'type': 'danger',
-						'message': 'Authentication failed, please try again.'
-					},
-					'form': form
-				})
+class LogoutView(View):
+	def get(self, request):
+		logout(request)
+		return redirect('public:index')
 
-	# GET requests
-	else:
-		form = LoginForm()
+class RegisterView(FormView):
+	template_name = 'public/register.html'
+	form_class = RegisterForm
+	success_url = reverse_lazy('public:index')
 
-	return render(request, 'public/login.html', { 'form': form })
+	def form_valid(self, form):
+		user = User.objects.create_user(
+			username = form.cleaned_data.get('username'),
+			email = form.cleaned_data.get('email'),
+			password = form.cleaned_data.get('password'),
+			first_name = form.cleaned_data.get('first_name'),
+			last_name = form.cleaned_data.get('last_name')
+		)
+		profile = UserProfile(
+			user = user,
+			phone = form.cleaned_data.get('phone_number')
+		)
+		profile.save()
 
-def logout_view(request):
-	logout(request)
-	return redirect('public:index')
+		user = authenticate(
+			username = form.cleaned_data.get('username'),
+			password = form.cleaned_data.get('password')
+		)
+		login(self.request, user)
 
-def register_view(request):
-	if request.method == 'POST':
-		form = RegisterForm(request.POST)
+		return super(RegisterView, self).form_valid(form)
 
-		if form.is_valid():
-			user = User.objects.create_user(
-				username = form.cleaned_data.get('username'),
-				email = form.cleaned_data.get('email'),
-				password = form.cleaned_data.get('password'),
-				first_name = form.cleaned_data.get('first_name'),
-				last_name = form.cleaned_data.get('last_name')
-			)
-			profile = UserProfile(
-				user = user,
-				phone = form.cleaned_data.get('phone_number')
-			)
-			profile.save()
+class TripCreateView(CreateView):
+	model = Trip
+	template_name = 'public/trip_new.html'
+	fields = ['leaving_date', 'origin', 'destination']
+	success_url = reverse_lazy('public:index')
 
-			user = authenticate(
-				username = form.cleaned_data.get('username'),
-				password = form.cleaned_data.get('password')
-			)
-			login(request, user)
-			return redirect('public:index')
+	def form_valid(self, form):
+		trip = form.save(commit=False)
+		trip.driver = self.request.user
+		trip.save()
 
-	# GET requests
-	else:
-		form = RegisterForm()
-
-	return render(request, 'public/register.html', { 'form': form })
-
-def trip_create_view(request):
-	if request.method == 'POST':
-		form = TripForm(request.POST)
-
-		if form.is_valid():
-			trip = form.save(commit=False)
-			trip.driver = request.user
-			trip.save()
-			# TODO: Redirect to trip single page instead of index
-			return render(request, 'public/index.html', {
-				'alert': {
-					'type': 'success',
-					'message': 'Trip created successfully!'
-				}
-			})
-
-	else:
-		form = TripForm()
-
-	return render(request, 'public/trip-create.html', { 'form': form })
+		return super(TripCreateView, self).form_valid(form)
