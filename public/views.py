@@ -1,4 +1,4 @@
-from django.views.generic import View, DetailView, FormView, CreateView
+from django.views.generic import TemplateView, RedirectView, DetailView, FormView, CreateView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
@@ -8,10 +8,13 @@ from django.core.urlresolvers import reverse_lazy
 from .models import UserProfile, Trip
 from .forms import RegisterForm
 
-class IndexView(View):
-	def get(self, request):
-		latest_trips = Trip.objects.order_by('-id')[:5]
-		return render(request, 'public/index.html', { 'latest_trips': latest_trips })
+class IndexView(TemplateView):
+	template_name = 'public/index.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(IndexView, self).get_context_data(**kwargs)
+		context['latest_trips'] = Trip.objects.order_by('-id')[:5]
+		return context
 
 class LoginView(FormView):
 	template_name = 'public/login.html'
@@ -22,10 +25,12 @@ class LoginView(FormView):
 		login(self.request, form.get_user())
 		return super(LoginView, self).form_valid(form)
 
-class LogoutView(View):
-	def get(self, request):
+class LogoutView(RedirectView):
+	url = reverse_lazy('public:index')
+
+	def get(self, request, *args, **kwargs):
 		logout(request)
-		return redirect('public:index')
+		return super(LogoutView, self).get(request, *args, **kwargs)
 
 class RegisterView(FormView):
 	template_name = 'public/register.html'
