@@ -75,6 +75,18 @@ def trip_create_view(request):
 	if request.method == 'POST':
 		form = TripForm(request.POST)
 
+		if form.is_valid():
+			trip = form.save(commit=False)
+			trip.driver = request.user
+			trip.save()
+			# TODO: Redirect to trip single page instead of index
+			return render(request, 'public/index.html', {
+				'alert': {
+					'type': 'success',
+					'message': 'Voyage créé avec succès'
+				}
+			})
+
 	else:
 		form = TripForm()
 
