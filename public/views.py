@@ -1,4 +1,4 @@
-from django.views.generic import View, FormView, CreateView
+from django.views.generic import View, DetailView, FormView, CreateView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
@@ -10,7 +10,8 @@ from .forms import RegisterForm
 
 class IndexView(View):
 	def get(self, request):
-		return render(request, 'public/index.html', {})
+		latest_trips = Trip.objects.order_by('-id')[:5]
+		return render(request, 'public/index.html', { 'latest_trips': latest_trips })
 
 class LoginView(FormView):
 	template_name = 'public/login.html'
@@ -56,7 +57,7 @@ class RegisterView(FormView):
 class TripCreateView(CreateView):
 	model = Trip
 	template_name = 'public/trip_new.html'
-	fields = ['leaving_date', 'origin', 'destination']
+	fields = ['departure_date', 'origin', 'destination']
 	success_url = reverse_lazy('public:index')
 
 	def form_valid(self, form):
@@ -65,3 +66,6 @@ class TripCreateView(CreateView):
 		trip.save()
 
 		return super(TripCreateView, self).form_valid(form)
+
+class TripDetailView(DetailView):
+	model = Trip

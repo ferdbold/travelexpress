@@ -1,0 +1,9 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+	<h1>{{ object.origin }} to {{ object.destination }}
+		<small>by {{ object.driver.first_name }} {{ object.driver.last_name }}</small>
+	</h1>
+
+	<p><strong>Leaving date and time:</strong> {{ object.departure_date }}</p>
+{% endblock %}

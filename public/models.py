@@ -14,6 +14,6 @@ class Trip(models.Model):
 		related_name='passengers'
 	)
 
-	leaving_date = models.DateTimeField()
+	departure_date = models.DateTimeField()
 	origin = models.CharField(max_length=255)
 	destination = models.CharField(max_length=255)

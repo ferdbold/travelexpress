@@ -1,5 +1,23 @@
 {% extends '_layout.html' %}
 
 {% block content %}
-	<h1>Home</h1>
+	<h1>Latest trips</h1>
+
+	{% if latest_trips %}
+	<ul>
+		{% for trip in latest_trips %}
+			<li class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title"><a href="{% url 'public:trip_detail' trip.id %}">
+						{{ trip.origin }} to {{ trip.destination }}
+						<small>by {{ trip.driver.first_name }} {{ trip.driver.last_name }}</small>
+					</a></h2>
+				</div>
+				<div class="panel-body">
+					{{ trip.departure_date }}
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
 {% endblock %}
