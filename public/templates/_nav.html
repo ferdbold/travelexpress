@@ -29,14 +29,13 @@
 		</ul>
 
 		<!-- Search bar -->
-		<form class="navbar-form navbar-left" role="search" action="" method="POST">
-			<div class="input-group">
-				<input type="text" class="form-control" name="search_query" placeholder="Look for trips..." />
-				<span class="input-group-btn">
-					<button type="submit" class="btn btn-default">
-						{% bootstrap_icon 'search' %}
-					</button>
-				</span>
+		<form class="navbar-form navbar-left form-inline tex-search-form" role="search" action="" method="POST">
+			<div class="form-group">
+				<input type="text" class="form-control" name="search_from" placeholder="From..." />
+				<input type="text" class="form-control" name="search_to" placeholder="To..." />
+				<button type="submit" class="btn btn-default">
+					{% bootstrap_icon 'search' %}
+				</button>
 			</div>
 		</form>
 	</div>
