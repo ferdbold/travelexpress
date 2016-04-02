@@ -4,10 +4,12 @@ from django.contrib.auth.models import User
 
 from .models import UserProfile, Trip
 
+
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
     verbose_name_plural = 'profile'
+
 
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
