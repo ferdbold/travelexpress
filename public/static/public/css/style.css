@@ -21,6 +21,22 @@
 	color: white;
 }
 
+.tex-search-form input:first-child {
+	margin-right: -5px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.tex-search-form input:last-of-type {
+	border-radius: 0px;
+	margin-right: -5px;
+}
+
+.tex-search-form button {
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
 /** PAGE CONTENT */
 
 .tex-page-content {

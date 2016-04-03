@@ -1,12 +1,12 @@
-from django.views.generic import TemplateView, RedirectView, DetailView, FormView, CreateView
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic import TemplateView, RedirectView, DetailView, FormView, CreateView
 
+from .forms import RegisterForm, PreferencesForm
 from .models import UserProfile, Trip
-from .forms import RegisterForm
 
 
 class IndexView(TemplateView):
@@ -93,3 +93,44 @@ class UserProfileView(DetailView):
         # TODO: Add passenger trips to context dictionary
 
         return context
+
+
+class UserPreferencesView(LoginRequiredMixin, FormView):
+    """Displays a form to edit user preferences. This view is only available to the current user."""
+    template_name = 'public/user_preferences.html'
+    form_class = PreferencesForm
+
+    def get_success_url(self):
+        """Redirect to my profile on success"""
+        return reverse('public:profile', kwargs={'pk': self.request.user.id})
+
+    def get_initial(self):
+        """Prepopulate form data"""
+        initial = super(UserPreferencesView, self).get_initial()
+        user = self.request.user
+
+        initial['first_name'] = user.first_name
+        initial['last_name'] = user.last_name
+        initial['email'] = user.email
+        initial['phone'] = user.profile.phone
+        initial['tolerates'] = user.profile.tolerates
+        initial['does_not_tolerate'] = user.profile.does_not_tolerate
+
+        return initial
+
+    def form_valid(self, form):
+        """Handle form submission"""
+        user = self.request.user
+        profile = user.profile
+
+        user.first_name = form.cleaned_data.get('first_name')
+        user.last_name = form.cleaned_data.get('last_name')
+        user.email = form.cleaned_data.get('email')
+        profile.phone = form.cleaned_data.get('phone')
+        profile.tolerates = form.cleaned_data.get('tolerates')
+        profile.does_not_tolerate = form.cleaned_data.get('does_not_tolerate')
+
+        profile.save()
+        user.save()
+
+        return super(UserPreferencesView, self).form_valid(form)
