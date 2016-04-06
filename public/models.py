@@ -13,6 +13,7 @@ class UserProfile(models.Model):
     phone = models.CharField(max_length=10, default='')
     tolerates = models.CharField(max_length=500, default='', blank=True)
     does_not_tolerate = models.CharField(max_length=500, default='', blank=True)
+    is_blocked = models.BooleanField(default=False)
 
 
 class Trip(models.Model):
