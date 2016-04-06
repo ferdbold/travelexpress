@@ -1,9 +1,21 @@
 {% extends '_layout.html' %}
 
 {% block content %}
-	<h1>{{ object.origin }} to {{ object.destination }}
-		<small>by {{ object.driver.first_name }} {{ object.driver.last_name }}</small>
-	</h1>
+<div class="row">
+    <div class="col-md-6">
+        <h1>{{ object.origin }} to {{ object.destination }}
+            <small>by <a href="{% url 'public:profile' object.driver.pk %}">{{ object.driver }}</a> </small>
+        </h1>
 
-	<p><strong>Departure date and time:</strong> {{ object.departure_date }}</p>
+        <p><strong>Departure date and time:</strong> {{ object.departure_date }}</p>
+    </div>
+    <div class="col-md-4 panel panel-info" style="padding: 0">
+        <div class="panel-heading"><a href="{% url 'public:profile' object.driver.pk %}">{{ object.driver }}</a></div>
+        <div class="panel-body">
+            <p>{%if object.driver.profile.phone %}Phone number: {{object.driver.profile.phone}}{% endif %}</p>
+            <p>{%if object.driver.profile.tolerates %}Tolerates: {{object.driver.profile.tolerates}}{% endif %}</p>
+            <p>{%if object.driver.profile.does_not_tolerate %}Does not tolerate: {{object.driver.profile.does_not_tolerate}}{% endif %}</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
