@@ -43,21 +43,21 @@ class RegisterView(FormView):
 
     def form_valid(self, form):
         user = User.objects.create_user(
-                username=form.cleaned_data.get('username'),
-                email=form.cleaned_data.get('email'),
-                password=form.cleaned_data.get('password'),
-                first_name=form.cleaned_data.get('first_name'),
-                last_name=form.cleaned_data.get('last_name')
+            username=form.cleaned_data.get('username'),
+            email=form.cleaned_data.get('email'),
+            password=form.cleaned_data.get('password'),
+            first_name=form.cleaned_data.get('first_name'),
+            last_name=form.cleaned_data.get('last_name')
         )
         profile = UserProfile(
-                user=user,
-                phone=form.cleaned_data.get('phone_number')
+            user=user,
+            phone=form.cleaned_data.get('phone_number')
         )
         profile.save()
 
         user = authenticate(
-                username=form.cleaned_data.get('username'),
-                password=form.cleaned_data.get('password')
+            username=form.cleaned_data.get('username'),
+            password=form.cleaned_data.get('password')
         )
         login(self.request, user)
 
@@ -134,3 +134,29 @@ class UserPreferencesView(LoginRequiredMixin, FormView):
         user.save()
 
         return super(UserPreferencesView, self).form_valid(form)
+
+
+class SearchResultsView(TemplateView):
+    template_name = 'public/search_results.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResultsView, self).get_context_data(**kwargs)
+        context['search_from'] = self.request.GET.get('search_from')
+        context['search_to'] = self.request.GET.get('search_to')
+
+        if context['search_from'] != '':
+            trips_from = Trip.objects.filter(origin=context['search_from'])
+        if context['search_to'] != '':
+            trips_to = Trip.objects.filter(destination=context['search_to'])
+
+        if context['search_from'] != '' and context['search_to'] != '':
+            trips = trips_from & trips_to
+        elif context['search_from'] != '':
+            trips = trips_from
+        elif context['search_to'] != '':
+            trips = trips_to
+        else:
+            trips = Trip.objects.all()
+
+        context['trips'] = trips
+        return context

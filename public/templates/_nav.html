@@ -29,7 +29,7 @@
 		</ul>
 
 		<!-- Search bar -->
-		<form class="navbar-form navbar-left form-inline tex-search-form" role="search" action="" method="POST">
+		<form class="navbar-form navbar-left form-inline tex-search-form" role="search" action="{% url 'public:search_results' %}" method="GET">
 			<div class="form-group">
 				<input type="text" class="form-control" name="search_from" placeholder="From..." />
 				<input type="text" class="form-control" name="search_to" placeholder="To..." />

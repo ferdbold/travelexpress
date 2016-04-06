@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^trips/(?P<pk>[0-9]+)/$', views.TripDetailView.as_view(), name='trip_detail'),
     url(r'^profile/(?P<pk>[0-9]+)/$', views.UserProfileView.as_view(), name='profile'),
     url(r'^preferences/$', views.UserPreferencesView.as_view(), name='preferences'),
+    url(r'^results/$', views.SearchResultsView.as_view(), name='search_results'),
     url(r'^$', views.IndexView.as_view(), name='index')
 ]

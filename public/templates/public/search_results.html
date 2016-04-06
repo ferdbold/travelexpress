@@ -1,0 +1,36 @@
+{% extends '_layout.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+        <h1>{% if trips %}
+                Trips found
+            {% else %}
+                No trip found
+            {% endif %}
+            <small>
+            {% if search_from != '' %}
+                from {{ search_from }}
+            {% endif %}
+            {% if search_to != '' %}
+                to {{ search_to }}
+            {% endif %}
+            </small>
+        </h1>
+
+        {% if trips %}
+        {% for trip in trips %}
+            <div class="panel panel-default">
+              <div class="panel-body">
+                  <a href="{% url 'public:trip_detail' trip.pk %}"> <h3>from {{trip.origin}} to {{trip.destination}}</h3> </a>
+                  <h5>Departure date: {{ trip.departure_date }}</h5>
+              </div>
+            </div>
+        {% endfor %}
+        {% endif %}
+
+
+
+
+{% endblock %}
