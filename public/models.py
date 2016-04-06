@@ -29,3 +29,4 @@ class Trip(models.Model):
     departure_date = models.DateTimeField()
     origin = models.CharField(max_length=255, default='')
     destination = models.CharField(max_length=255, default='')
+    is_canceled = models.BooleanField(default=False)

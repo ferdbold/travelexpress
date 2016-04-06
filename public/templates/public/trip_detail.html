@@ -3,12 +3,19 @@
 {% block content %}
 <div class="row">
     <div class="col-md-6">
+        {% if object.is_canceled == True %}<h3 style="color: red">CANCELLED!</h3> {% endif %}
         <h1>{{ object.origin }} to {{ object.destination }}
             <small>by <a href="{% url 'public:profile' object.driver.pk %}">{{ object.driver }}</a> </small>
         </h1>
-
         <p><strong>Departure date and time:</strong> {{ object.departure_date }}</p>
+        {% if object.driver == user and object.is_canceled == False %}
+            <form method="POST" action="{% url 'public:trip_cancel' object.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger"> Cancel trip </button>
+            </form>
+        {% endif %}
     </div>
+    <!-- driver info -->
     <div class="col-md-4 panel panel-info" style="padding: 0">
         <div class="panel-heading"><a href="{% url 'public:profile' object.driver.pk %}">{{ object.driver }}</a></div>
         <div class="panel-body">

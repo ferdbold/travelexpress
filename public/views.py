@@ -82,6 +82,20 @@ class TripDetailView(DetailView):
     model = Trip
 
 
+class TripCancelView(RedirectView):
+    model = Trip
+
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse_lazy('public:trip_detail',
+                            kwargs={'pk': kwargs['pk']})
+
+    def post(self, request, *args, **kwargs):
+        trip = Trip.objects.get(pk=kwargs['pk'])
+        trip.is_canceled = True
+        trip.save()
+        return super(TripCancelView, self).post(request, *args, **kwargs)
+
+
 class UserProfileView(DetailView):
     model = User
     template_name = 'public/user_profile.html'

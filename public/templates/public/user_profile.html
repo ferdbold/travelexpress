@@ -11,9 +11,11 @@
 
 			<ul>
 				{% for trip in driver_trips %}
+				{% if trip.is_canceled == False %}
 					<li>
 						{% trip_panel trip %}
 					</li>
+				{% endif %}
 				{% endfor %}
 			</ul>
 
