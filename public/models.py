@@ -25,7 +25,7 @@ class Trip(models.Model):
                                )
     passengers = models.ManyToManyField(User,
                                         related_name='passengers',
-                                        blank=True, null=True
+                                        blank=True
                                         )
 
     departure_date = models.DateTimeField()

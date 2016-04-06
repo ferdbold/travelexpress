@@ -15,6 +15,16 @@
                 <button type="submit" class="btn btn-danger"> Cancel trip </button>
             </form>
         {% endif %}
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                {% if user in object.passengers and object.is_canceled == False %}
+                    <button type="submit" class="btn btn-danger"> Quit trip </button>
+                {% else %}
+                    <button type="submit" class="btn btn-success"> Join trip </button>
+                {% endif %}
+            </form>
+
     </div>
     <!-- driver info -->
     <div class="col-md-4 panel panel-info" style="padding: 0">

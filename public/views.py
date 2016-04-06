@@ -81,6 +81,10 @@ class TripCreateView(CreateView):
 class TripDetailView(DetailView):
     model = Trip
 
+    def get(self, request, *args, **kwargs):
+        print(Trip.objects.get(pk=kwargs['pk']).passengers)
+        return super(TripDetailView, self).get(request, *args, **kwargs)
+
 
 class TripCancelView(RedirectView):
     model = Trip
