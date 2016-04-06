@@ -11,6 +11,7 @@
         {% if object.driver == user and object.is_canceled == False %}
             <form method="POST" action="{% url 'public:trip_cancel' object.pk %}">
                 {% csrf_token %}
+                <button type="submit" class="btn btn-success">Make trip complete</button>
                 <button type="submit" class="btn btn-danger"> Cancel trip </button>
             </form>
         {% endif %}
