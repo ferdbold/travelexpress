@@ -51,7 +51,7 @@ class RegisterView(FormView):
         )
         profile = UserProfile(
             user=user,
-            phone=form.cleaned_data.get('phone_number')
+            phone=form.cleaned_data.get('phone')
         )
         profile.save()
 
