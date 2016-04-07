@@ -19,7 +19,7 @@
             </form>
             <form method="POST" action="{% url 'public:trip_cancel' object.pk %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger"> Cancel trip </button>
+                <button type="submit" class="btn btn-danger">Cancel trip</button>
             </form>
         {% endif %}
 

@@ -16,6 +16,7 @@ class UserProfile(models.Model):
     does_not_tolerate = models.CharField(max_length=500, default='', blank=True)
     blocked_until = models.DateTimeField(default=datetime.now, blank=True)
     quit_count = models.IntegerField(default=0, blank=True)
+    balance = models.DecimalField(default=0, max_digits=6, decimal_places=2)
 
 
 class Trip(models.Model):
@@ -33,5 +34,6 @@ class Trip(models.Model):
     departure_date = models.DateTimeField()
     origin = models.CharField(max_length=255, default='')
     destination = models.CharField(max_length=255, default='')
+    fee = models.DecimalField(default=0, max_digits=5, decimal_places=2)
     is_canceled = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)

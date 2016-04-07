@@ -68,7 +68,7 @@ class RegisterView(FormView):
 class TripCreateView(CreateView):
     model = Trip
     template_name = 'public/trip_new.html'
-    fields = ['departure_date', 'origin', 'destination']
+    fields = ['departure_date', 'origin', 'destination', 'fee']
     success_url = reverse_lazy('public:index')
 
     def form_valid(self, form):
@@ -134,6 +134,7 @@ class TripQuitView(RedirectView):
         return reverse_lazy('public:trip_detail',
                             kwargs={'pk': kwargs['pk']})
 
+
     def post(self, request, *args, **kwargs):
         trip = Trip.objects.get(pk=kwargs['pk'])
         trip.passengers.remove(self.request.user)
@@ -153,13 +154,13 @@ class UserProfileView(DetailView):
     model = User
     template_name = 'public/user_profile.html'
 
+
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
         """Display trips as a driver"""
         context['driver_trips'] = Trip.objects.filter(driver=context['object'])
         """Display trips as a driver"""
         context['passenger_trips'] = context['object'].passengers.all()
-
 
         return context
 
