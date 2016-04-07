@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import TemplateView, RedirectView, DetailView, FormView, CreateView
+from django.utils import timezone
 
 from .forms import RegisterForm, PreferencesForm
 from .models import UserProfile, Trip
@@ -85,6 +86,10 @@ class TripDetailView(DetailView):
         context = super(TripDetailView, self).get_context_data(**kwargs)
         trip = Trip.objects.get(pk=kwargs['object'].pk)
         context['is_passenger'] = trip.passengers.filter(profile=self.request.user.profile).exists()
+        if self.request.user.profile.blocked_until is not None:
+            context['is_blocked'] = self.request.user.profile.blocked_until > timezone.now()
+        else:
+            context['is_blocked'] = False
         return context
 
 
@@ -124,8 +129,10 @@ class TripQuitView(RedirectView):
         userprofile = self.request.user.profile
         userprofile.quit_count += 1
         if userprofile.quit_count >= 3:
-            userprofile.is_blocked = True
+            userprofile.blocked_until = timezone.now() + timezone.timedelta(days=30)
             userprofile.quit_count = 0
+        else:
+            userprofile.blocked_until = timezone.now()
         userprofile.save()
         return super(TripQuitView, self).post(request, *args, **kwargs)
 
