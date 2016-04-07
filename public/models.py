@@ -14,6 +14,7 @@ class UserProfile(models.Model):
     tolerates = models.CharField(max_length=500, default='', blank=True)
     does_not_tolerate = models.CharField(max_length=500, default='', blank=True)
     is_blocked = models.BooleanField(default=False)
+    quit_count = models.IntegerField(default=0, blank=True)
 
 
 class Trip(models.Model):

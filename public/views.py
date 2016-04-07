@@ -81,14 +81,14 @@ class TripCreateView(CreateView):
 class TripDetailView(DetailView):
     model = Trip
 
-    def get(self, request, *args, **kwargs):
-        print(Trip.objects.get(pk=kwargs['pk']).passengers)
-        return super(TripDetailView, self).get(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(TripDetailView, self).get_context_data(**kwargs)
+        trip = Trip.objects.get(pk=kwargs['object'].pk)
+        context['is_passenger'] = trip.passengers.filter(profile=self.request.user.profile).exists()
+        return context
 
 
 class TripCancelView(RedirectView):
-    model = Trip
-
     def get_redirect_url(self, *args, **kwargs):
         return reverse_lazy('public:trip_detail',
                             kwargs={'pk': kwargs['pk']})
@@ -98,6 +98,36 @@ class TripCancelView(RedirectView):
         trip.is_canceled = True
         trip.save()
         return super(TripCancelView, self).post(request, *args, **kwargs)
+
+
+class TripJoinView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse_lazy('public:trip_detail',
+                            kwargs={'pk': kwargs['pk']})
+
+    def post(self, request, *args, **kwargs):
+        trip = Trip.objects.get(pk=kwargs['pk'])
+        trip.passengers.add(request.user)
+        trip.save()
+        return super(TripJoinView, self).post(request, *args, **kwargs)
+
+
+class TripQuitView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse_lazy('public:trip_detail',
+                            kwargs={'pk': kwargs['pk']})
+
+    def post(self, request, *args, **kwargs):
+        trip = Trip.objects.get(pk=kwargs['pk'])
+        trip.passengers.remove(self.request.user)
+        trip.save()
+        userprofile = self.request.user.profile
+        userprofile.quit_count += 1
+        if userprofile.quit_count >= 3:
+            userprofile.is_blocked = True
+            userprofile.quit_count = 0
+        userprofile.save()
+        return super(TripQuitView, self).post(request, *args, **kwargs)
 
 
 class UserProfileView(DetailView):

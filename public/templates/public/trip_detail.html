@@ -8,6 +8,8 @@
             <small>by <a href="{% url 'public:profile' object.driver.pk %}">{{ object.driver }}</a> </small>
         </h1>
         <p><strong>Departure date and time:</strong> {{ object.departure_date }}</p>
+
+        <!-- trip driver cancel and complete buttons -->
         {% if object.driver == user and object.is_canceled == False %}
             <form method="POST" action="{% url 'public:trip_cancel' object.pk %}">
                 {% csrf_token %}
@@ -16,14 +18,22 @@
             </form>
         {% endif %}
 
-            <form method="POST" action="">
-                {% csrf_token %}
-                {% if user in object.passengers and object.is_canceled == False %}
+        <!-- join or quit trip buttons -->
+        {% if object.is_canceled == False and object.driver != user %}
+            {% if is_passenger == True %}
+                <form method="POST" action="{% url 'public:trip_quit' object.pk %}">
+                    {% csrf_token %}
                     <button type="submit" class="btn btn-danger"> Quit trip </button>
-                {% else %}
+                </form>
+            {% else %}
+                {% if user.profile.is_blocked == False %}
+                <form method="POST" action="{% url 'public:trip_join' object.pk %}">
+                    {% csrf_token %}
                     <button type="submit" class="btn btn-success"> Join trip </button>
+                </form>
                 {% endif %}
-            </form>
+            {% endif %}
+        {% endif %}
 
     </div>
     <!-- driver info -->
