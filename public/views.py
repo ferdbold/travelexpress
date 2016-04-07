@@ -85,11 +85,16 @@ class TripDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(TripDetailView, self).get_context_data(**kwargs)
         trip = Trip.objects.get(pk=kwargs['object'].pk)
+
         context['is_passenger'] = trip.passengers.filter(profile=self.request.user.profile).exists()
+
         if self.request.user.profile.blocked_until is not None:
             context['is_blocked'] = self.request.user.profile.blocked_until > timezone.now()
         else:
             context['is_blocked'] = False
+
+        context['can_afford'] = self.request.user.profile.balance >= trip.fee
+
         return context
 
 
