@@ -5,6 +5,7 @@
     <div class="col-md-6">
         {% if object.is_canceled == True %}<h3 style="color: red">CANCELLED!</h3> {% endif %}
         {% if object.is_completed == True %}<h3 style="color: red">TRIP IS FULL!</h3> {% endif %}
+        {% if is_blocked == True %} <h4 style="color: orange">You were blocked by the system until {{user.profile.blocked_until}}</h4> {% endif %}
         <h1>{{ object.origin }} to {{ object.destination }}
             <small>by <a href="{% url 'public:profile' object.driver.pk %}">{{ object.driver }}</a> </small>
         </h1>
@@ -30,7 +31,7 @@
                     <button type="submit" class="btn btn-danger"> Quit trip </button>
                 </form>
             {% else %}
-                {% if user.profile.is_blocked == False and object.is_completed == False %}
+                {% if is_blocked == False and object.is_completed == False %}
                 <form method="POST" action="{% url 'public:trip_join' object.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success"> Join trip </button>

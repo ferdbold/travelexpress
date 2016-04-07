@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 class UserProfile(models.Model):
@@ -13,7 +14,7 @@ class UserProfile(models.Model):
     phone = models.CharField(max_length=10, default='')
     tolerates = models.CharField(max_length=500, default='', blank=True)
     does_not_tolerate = models.CharField(max_length=500, default='', blank=True)
-    is_blocked = models.BooleanField(default=False)
+    blocked_until = models.DateTimeField(default=datetime.now, blank=True)
     quit_count = models.IntegerField(default=0, blank=True)
 
 
