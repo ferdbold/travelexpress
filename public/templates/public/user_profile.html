@@ -8,23 +8,18 @@
 	<div class="row">
 		<div class="col-xs-8">
 			<h2>My trips as driver</h2>
-
 			<ul>
 				{% for trip in driver_trips %}
-				{% if trip.is_canceled == False %}
-					<li>
-						{% trip_panel trip %}
-					</li>
-				{% endif %}
+					{% if not trip.is_canceled %}
+						<li>{% trip_panel trip %}</li>
+					{% endif %}
 				{% endfor %}
 			</ul>
 
 			<h2>My trips as passenger</h2>
 			<ul>
 				{% for trip in passenger_trips %}
-					<li>
-						{% trip_panel trip %}
-					</li>
+					<li>{% trip_panel trip %}</li>
 				{% endfor %}
 			</ul>
 		</div>
