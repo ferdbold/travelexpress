@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^register/$', views.RegisterView.as_view(), name='register'),
     url(r'^trips/new/$', views.TripCreateView.as_view(), name='trip_create'),
     url(r'^trips/(?P<pk>[0-9]+)/cancel/$', views.TripCancelView.as_view(), name='trip_cancel'),
+    url(r'^trips/(?P<pk>[0-9]+)/complete/$', views.TripCompleteView.as_view(), name='trip_complete'),
     url(r'^trips/(?P<pk>[0-9]+)/quit/$', views.TripQuitView.as_view(), name='trip_quit'),
     url(r'^trips/(?P<pk>[0-9]+)/join/$', views.TripJoinView.as_view(), name='trip_join'),
     url(r'^trips/(?P<pk>[0-9]+)/$', views.TripDetailView.as_view(), name='trip_detail'),

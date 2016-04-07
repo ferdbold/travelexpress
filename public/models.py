@@ -33,3 +33,4 @@ class Trip(models.Model):
     origin = models.CharField(max_length=255, default='')
     destination = models.CharField(max_length=255, default='')
     is_canceled = models.BooleanField(default=False)
+    is_completed = models.BooleanField(default=False)
