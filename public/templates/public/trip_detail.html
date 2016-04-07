@@ -1,61 +1,69 @@
 {% extends '_layout.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h1>{{ object.origin }} to {{ object.destination }}</h1>
-    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>
+                    {{ object.origin }} to {{ object.destination }}
+                    {% if object.is_canceled %}<span class="label label-danger">CANCELLED</span>{% endif %}
+                    {% if object.is_completed %}<span class="label label-warning">FULL</span>{% endif %}
+                </h1>
+            </div>
 
-    <div class="col-md-8">
-        {% if object.is_canceled == True %}<h3 style="color: red">CANCELLED!</h3> {% endif %}
-        {% if object.is_completed == True %}<h3 style="color: red">TRIP IS FULL!</h3> {% endif %}
-        {% if is_blocked == True %} <h4 style="color: orange">You were blocked by the system until {{ user.profile.blocked_until }}</h4> {% endif %}
+            {% if is_blocked %}
+                <div class="alert alert-danger">
+                    You were blocked by the system until {{ user.profile.blocked_until }}
+                </div>
+            {% endif %}
+        </div>
 
-        <ul class="list-group">
-            <li class="list-group-item"><strong>Departure date and time:</strong> {{ object.departure_date }}</li>
-            <li class="list-group-item"><strong>Fee:</strong> <span class="{% if not can_afford %}text-danger{% endif %}">{{ object.fee }}$</span> (My balance: {{ user.profile.balance }}$)</li>
-        </ul>
+        <div class="col-md-8">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Departure date and time:</strong> {{ object.departure_date }}</li>
+                <li class="list-group-item"><strong>Fee:</strong> <span class="{% if not can_afford %}text-danger{% endif %}">{{ object.fee }}$</span> (My balance: {{ user.profile.balance }}$)</li>
+            </ul>
 
-        <!-- trip driver cancel and complete buttons -->
-        {% if object.driver == user and object.is_canceled == False and object.is_completed == False %}
-            <form method="POST" action="{% url 'public:trip_complete' object.pk %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-success">Make trip complete</button>
-            </form>
-            <form method="POST" action="{% url 'public:trip_cancel' object.pk %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Cancel trip</button>
-            </form>
-        {% endif %}
-
-        <!-- join or quit trip buttons -->
-        {% if object.is_canceled == False and object.driver != user %}
-            {% if is_passenger == True %}
-                <form method="POST" action="{% url 'public:trip_quit' object.pk %}">
+            <!-- trip driver cancel and complete buttons -->
+            {% if object.driver == user and not object.is_canceled and not object.is_completed %}
+                <form method="POST" action="{% url 'public:trip_complete' object.pk %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger"> Quit trip </button>
+                    <button type="submit" class="btn btn-success">Make trip complete</button>
                 </form>
-            {% else %}
-                {% if not is_blocked and not object.is_completed and can_afford %}
-                <form method="POST" action="{% url 'public:trip_join' object.pk %}">
+                <form method="POST" action="{% url 'public:trip_cancel' object.pk %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-success"> Join trip </button>
+                    <button type="submit" class="btn btn-danger">Cancel trip</button>
                 </form>
+            {% endif %}
+
+            <!-- join or quit trip buttons -->
+            {% if not object.is_canceled and object.driver != user %}
+                {% if is_passenger == True %}
+                    <form method="POST" action="{% url 'public:trip_quit' object.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger"> Quit trip </button>
+                    </form>
+                {% else %}
+                    {% if not is_blocked and not object.is_completed and can_afford %}
+                    <form method="POST" action="{% url 'public:trip_join' object.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success"> Join trip </button>
+                    </form>
+                    {% endif %}
                 {% endif %}
             {% endif %}
-        {% endif %}
+        </div>
 
-    </div>
-    <!-- driver info -->
-    <div class="col-md-4">
-        <div class="panel panel-info" style="padding: 0">
-            <div class="panel-heading">Driver: <a href="{% url 'public:profile' object.driver.pk %}"><b>{{ object.driver }}</b></a></div>
-            <div class="panel-body">
-                <p>{%if object.driver.profile.phone %}Phone number: {{object.driver.profile.phone}}{% endif %}</p>
-                <p>{%if object.driver.profile.tolerates %}Tolerates: {{object.driver.profile.tolerates}}{% endif %}</p>
-                <p>{%if object.driver.profile.does_not_tolerate %}Does not tolerate: {{object.driver.profile.does_not_tolerate}}{% endif %}</p>
+        <!-- driver info -->
+        <div class="col-md-4">
+            <div class="panel panel-info" style="padding: 0">
+                <div class="panel-heading">Driver: <a href="{% url 'public:profile' object.driver.pk %}"><b>{{ object.driver }}</b></a></div>
+                <div class="panel-body">
+                    <p>{%if object.driver.profile.phone %}Phone number: {{object.driver.profile.phone}}{% endif %}</p>
+                    <p>{%if object.driver.profile.tolerates %}Tolerates: {{object.driver.profile.tolerates}}{% endif %}</p>
+                    <p>{%if object.driver.profile.does_not_tolerate %}Does not tolerate: {{object.driver.profile.does_not_tolerate}}{% endif %}</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
