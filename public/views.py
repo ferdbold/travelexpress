@@ -143,9 +143,11 @@ class UserProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
-
+        """Display trips as a driver"""
         context['driver_trips'] = Trip.objects.filter(driver=context['object'])
-        # TODO: Add passenger trips to context dictionary
+        """Display trips as a driver"""
+        context['passenger_trips'] = context['object'].passengers.all()
+
 
         return context
 
