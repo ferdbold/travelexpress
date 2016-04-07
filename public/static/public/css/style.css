@@ -1,4 +1,8 @@
-
+/** GENERAL */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
 /** NAV */
 
 .tex-header-navbar .container-fluid {
