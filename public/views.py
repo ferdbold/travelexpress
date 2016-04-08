@@ -179,7 +179,6 @@ class UserProfileView(DetailView):
     model = User
     template_name = 'public/user_profile.html'
 
-
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
         """Display trips as a driver"""
@@ -188,6 +187,18 @@ class UserProfileView(DetailView):
         context['passenger_trips'] = context['object'].passengers.all()
 
         return context
+
+
+class UserProfileBuyView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse_lazy('public:profile',
+                            kwargs={'pk': kwargs['pk']})
+
+    def post(self, request, *args, **kwargs):
+        userprofile = request.user.profile
+        userprofile.balance += 50
+        userprofile.save()
+        return super(UserProfileBuyView, self).post(request, *args, **kwargs)
 
 
 class UserPreferencesView(LoginRequiredMixin, FormView):

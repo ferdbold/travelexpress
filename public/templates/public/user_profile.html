@@ -22,6 +22,22 @@
 					<li>{% trip_panel trip %}</li>
 				{% endfor %}
 			</ul>
+
+		</div>
+		<div class="col-xs-3">
+			<div class="panel panel-info" style="padding: 0">
+				<div class="panel-body">
+					<p class="pull-left" style="margin-right:1em"><strong>Balance:</strong> {{user.profile.balance}}</p>
+					<form class="pull-left" method="POST" action="{% url 'public:profile_buy' object.pk %}">
+					  {% csrf_token %}
+					  <button type="submit" class="btn btn-primary btn-xs"> +50$ </button>
+				  </form>
+					<br><hr>
+					<p><strong>Phone number:</strong> {{ user.profile.phone }}</p>
+					<p><strong>tolerates:</strong> {{ user.profile.tolerates }}</p>
+					<p><strong>Does not tolerate:</strong> {{ user.profile.does_not_tolerate }}</p>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
