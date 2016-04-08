@@ -128,9 +128,12 @@ class TripJoinView(RedirectView):
                             kwargs={'pk': kwargs['pk']})
 
     def post(self, request, *args, **kwargs):
+        userprofile = request.user.profile
         trip = Trip.objects.get(pk=kwargs['pk'])
         trip.passengers.add(request.user)
         trip.save()
+        userprofile.balance -= trip.fee
+        userprofile.save()
         return super(TripJoinView, self).post(request, *args, **kwargs)
 
 
@@ -139,13 +142,13 @@ class TripQuitView(RedirectView):
         return reverse_lazy('public:trip_detail',
                             kwargs={'pk': kwargs['pk']})
 
-
     def post(self, request, *args, **kwargs):
         trip = Trip.objects.get(pk=kwargs['pk'])
         trip.passengers.remove(self.request.user)
         trip.save()
-        userprofile = self.request.user.profile
+        userprofile = request.user.profile
         userprofile.quit_count += 1
+        userprofile.balance += trip.fee
         if userprofile.quit_count >= 3:
             userprofile.blocked_until = timezone.now() + timezone.timedelta(days=30)
             userprofile.quit_count = 0
