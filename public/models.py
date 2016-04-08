@@ -37,3 +37,4 @@ class Trip(models.Model):
     fee = models.DecimalField(default=0, max_digits=5, decimal_places=2)
     is_canceled = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
+    closed = models.BooleanField(default=False)

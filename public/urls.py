@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^trips/(?P<pk>[0-9]+)/complete/$', views.TripCompleteView.as_view(), name='trip_complete'),
     url(r'^trips/(?P<pk>[0-9]+)/quit/$', views.TripQuitView.as_view(), name='trip_quit'),
     url(r'^trips/(?P<pk>[0-9]+)/join/$', views.TripJoinView.as_view(), name='trip_join'),
+    url(r'^trips/(?P<pk>[0-9]+)/finished/$', views.TripFinishedView.as_view(), name='trip_finished'),
     url(r'^trips/(?P<pk>[0-9]+)/$', views.TripDetailView.as_view(), name='trip_detail'),
     url(r'^profile/(?P<pk>[0-9]+)/$', views.UserProfileView.as_view(), name='profile'),
     url(r'^preferences/$', views.UserPreferencesView.as_view(), name='preferences'),

@@ -94,8 +94,25 @@ class TripDetailView(DetailView):
             context['is_blocked'] = False
 
         context['can_afford'] = self.request.user.profile.balance >= trip.fee
+        context['is_finished'] = trip.departure_date <= timezone.now()
 
         return context
+
+
+class TripFinishedView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse_lazy('public:trip_detail',
+                            kwargs={'pk': kwargs['pk']})
+
+    def post(self, request, *args, **kwargs):
+        user = request.user.profile
+        trip = Trip.objects.get(pk=kwargs['pk'])
+        user.balance += trip.passengers.count() * trip.fee
+        print(trip.passengers.count())
+        user.save()
+        trip.closed = True
+        trip.save()
+        return super(TripFinishedView, self).post(request, *args, **kwargs)
 
 
 class TripCancelView(RedirectView):

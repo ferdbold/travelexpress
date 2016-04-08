@@ -6,8 +6,13 @@
             <div class="page-header">
                 <h1>
                     {{ object.origin }} to {{ object.destination }}
-                    {% if object.is_canceled %}<span class="label label-danger">CANCELLED</span>{% endif %}
-                    {% if object.is_completed %}<span class="label label-warning">FULL</span>{% endif %}
+                    {% if not object.closed %}
+                        {% if object.is_canceled %}<span class="label label-danger">CANCELLED</span>{% endif %}
+                        {% if object.is_completed %}<span class="label label-warning">FULL</span>{% endif %}
+                        {% if is_finished %}<span class="label label-warning">DONE</span>{% endif %}
+                    {% else %}
+                        <span class="label label-danger">CLOSED</span>
+                    {% endif %}
                 </h1>
             </div>
 
@@ -21,11 +26,13 @@
         <div class="col-md-8">
             <ul class="list-group">
                 <li class="list-group-item"><strong>Departure date and time:</strong> {{ object.departure_date }}</li>
+                {% if not object.driver == user %}
                 <li class="list-group-item"><strong>Fee:</strong> <span class="{% if not can_afford %}text-danger{% endif %}">{{ object.fee }}$</span> (My balance: {{ user.profile.balance }}$)</li>
+                {% endif %}
             </ul>
 
             <!-- trip driver cancel and complete buttons -->
-            {% if object.driver == user and not object.is_canceled and not object.is_completed %}
+            {% if object.driver == user and not object.is_canceled and not object.is_completed and not object.closed %}
                 <form method="POST" action="{% url 'public:trip_complete' object.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-success">Make trip complete</button>
@@ -34,6 +41,12 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Cancel trip</button>
                 </form>
+                {% if is_finished %}
+                    <form method="POST" action="{% url 'public:trip_finished' object.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Click if trip is done</button>
+                    </form>
+                {% endif %}
             {% endif %}
 
             <!-- join or quit trip buttons -->
